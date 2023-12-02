@@ -1,6 +1,8 @@
 from openai import AsyncOpenAI
 import asyncio
 import traceback
+import requests
+import time
 
 class Helper:
     """ Класс помощник для бота """
@@ -23,10 +25,14 @@ class DotDict(dict):
 
 class GptAdaper:
     """ Класс помощник для бота """
-    def __init__(self,data =None,*args,**kwargs):
+    def __init__(self,token=None,data =None,*args,**kwargs):
+        self.__token = token
         self.args = args
         self.kwargs = kwargs
         self.data = data
+        self.headers = {'Content-Type': 'application/json',
+                        'Authorization': f'Bearer {self.__token}',
+                        'OpenAI-Beta': 'assistants=v1'}
 
     def __getattr__(self, attr):
         return self.data.get(attr)
@@ -44,27 +50,35 @@ class GptAdaper:
         """ Все пользователи """
         return self.data
 
-    async def easy_gpt(self,token,input, assistant_name,system_message):
+    async def easy_gpt(self,token,input):
             """ Передаем запрос к GPT, получаем ответ в виде листа: 
             [0] - ответ бота, [1] - общее количество токенов запроса, [2] - баланс API-ключа """
             try:
                 client = AsyncOpenAI(api_key=token)
-                assistant = await client.beta.assistants.create(
-                            name=assistant_name,
-                            instructions=system_message,
-                            tools=[],
-                            model="gpt-3.5-turbo")
                 thread = await client.beta.threads.create()
-                message = client.beta.threads.messages.create(
+                await client.beta.threads.messages.create(
                         thread_id=thread.id,
                         role="user",
                         content=input
                         )
-                stream = await client.chat.completions.create(model='gpt-3.5-turbo', messages=[{"role": "user", "content": input}], stream=True)
-                response = ""
-                async for chunk in stream:
-                    if chunk.choices[0].delta.content is not None:
-                        response += chunk.choices[0].delta.content
+                run = await client.beta.threads.runs.create(
+                    thread_id=thread.id,
+                    assistant_id='asst_gu0muWvx44tALnw0aBzvjzNW'
+                    )
+                attempts = 0
+                while run.status != 'completed' and attempts < 10:
+                    run = await client.beta.threads.runs.retrieve(
+                        thread_id=thread.id,
+                        run_id=run.id
+                    )
+                    print(run.status)
+                    time.sleep(6)
+                    attempts += 1
+
+                messages = await client.beta.threads.messages.list(thread_id=thread.id)
+                response = messages.data[0].content[0].text.value
+                a = 1
+                b = 2
                 return response
             except:
                 print(traceback.format_exc())

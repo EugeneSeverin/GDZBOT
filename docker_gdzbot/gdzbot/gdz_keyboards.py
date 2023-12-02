@@ -12,24 +12,27 @@ class Keyboards:
                             "🇬🇧 Ин.яз.": '6',
                             "🎓 Тест": '7',
                             "😇 Другое": '8',
-                            "👤 Мой профиль": '9',
+                            "👤 Мой профиль": 'user_profile',
                             "ℹ️ О боте": '10'
         }
 
         self.free_writting_buttons = {
                                     'Сочинение ✍️': 'сomposition',
-                                    'Эссе ✍️': 'essay',
-                                    'Сообщение ✍️': 'free_message',
+                                    '📃Эссе': 'essay',
+                                    'Сообщение 🖊': 'free_message',
                                     '📄 Реферат': 'abstract',
                                     '🖋️ Доклад': 'report',
                                     '📝 Изложение': 'exposition',
-                                    'Другое': '😇',
-                                    'Назад 🔙': 'back_to_menu'}
+                                    'Другое 😇': 'other_writting',
+                                    'Назад 🔙': 'back_to_main_menu'}
 
+
+        self.back_to_main_menu_buttons = {
+                                            'Назад 🔙': 'back_to_main_menu'}
 
     async def build_free_writing_keyboard(self) -> None:
         builder = InlineKeyboardBuilder()
-        for index in range(len(self.free_writting_buttons)-1):
+        for index in range(len(self.free_writting_buttons)):
             builder.button(text=list(self.free_writting_buttons.keys())[index],
                            callback_data=list(self.free_writting_buttons.values())[index])
             builder.adjust(2,2,2,1,1)
@@ -43,6 +46,17 @@ class Keyboards:
             builder.adjust(2,3,3,2)
         self.main = builder.as_markup()
 
+    async def build_back_to_main_menu_keyboard(self) -> None:
+        builder = InlineKeyboardBuilder()
+        for index in range(len(self.back_to_main_menu_buttons)):
+            builder.button(text=list(self.back_to_main_menu_buttons.keys())[index],
+                           callback_data=list(self.back_to_main_menu_buttons.values())[index])
+        self.back_to_main_menu = builder.as_markup()
+
+
     async def create_keyboards(self):
         await self.build_main_keyboard()
         await self.build_free_writing_keyboard()
+        await self.build_back_to_main_menu_keyboard()
+
+    

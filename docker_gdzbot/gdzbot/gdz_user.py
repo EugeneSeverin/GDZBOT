@@ -11,7 +11,8 @@ class GDZUser:
         self.state = None
         self.credit = None
         self.request_limit = None
-        self.requests_sent = None
+        self.requests_today = None
         self.access_level = None
         self.requested_theme = None
         self.current_request = None
+        self.gpt_reply = None
