@@ -5,15 +5,9 @@ class Keyboards:
     def __init__(self):
         self.main_buttons = {
                             "🖋 Сочинение/реферат и т.д.": 'free_writting',
-                            "📷 Текст с фото": '2',
-                            "🧮 Математика": '3',
-                            "🎨 Рисунок": '4',
-                            "❓ Вопрос": '5',
-                            "🇬🇧 Ин.яз.": '6',
-                            "🎓 Тест": '7',
-                            "😇 Другое": '8',
+                            "📷 Текст с фото": 'photo_analysis',
                             "👤 Мой профиль": 'user_profile',
-                            "ℹ️ О боте": '10'
+                            "ℹ️ О боте": 'about_bot'
         }
 
         self.free_writting_buttons = {
@@ -29,6 +23,19 @@ class Keyboards:
 
         self.back_to_main_menu_buttons = {
                                             'Назад 🔙': 'back_to_main_menu'}
+        
+        self.main_buttons_old = {
+                            "🖋 Сочинение/реферат и т.д.": 'free_writting',
+                            "📷 Текст с фото": 'photo_analysis',
+                            "🧮 Математика": '3',
+                            "🎨 Рисунок": '4',
+                            "❓ Вопрос": '5',
+                            "🇬🇧 Ин.яз.": '6',
+                            "🎓 Тест": '7',
+                            "😇 Другое": '8',
+                            "👤 Мой профиль": 'user_profile',
+                            "ℹ️ О боте": 'about_bot'
+        }
 
     async def build_free_writing_keyboard(self) -> None:
         builder = InlineKeyboardBuilder()
@@ -40,7 +47,7 @@ class Keyboards:
 
     async def build_main_keyboard(self) -> None:
         builder = InlineKeyboardBuilder()
-        for index in range(len(self.main_buttons)-1):
+        for index in range(len(self.main_buttons)):
             builder.button(text=list(self.main_buttons.keys())[index],
                            callback_data=list(self.main_buttons.values())[index])
             builder.adjust(2,3,3,2)

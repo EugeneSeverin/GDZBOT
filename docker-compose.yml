@@ -1,5 +1,6 @@
 version: '3.8'
 services:
+
   postgres:
     image: postgres
     environment:
@@ -9,11 +10,15 @@ services:
     ports:
       - "5432:5432"
     volumes:
-    - db:/var/lib/postgresql/data
-  gdz-bot:
-    build: ./docker_gdzbot
+    - ./volumes/db:/var/lib/postgresql/data
+
+  gdzbot:
+    build: ./gdzbot
     depends_on:
       - postgres
+    command: tail -f /dev/null
+    volumes:
+    - ./volumes/gdzbot/:/gzdbot
 
 volumes:
   db:
