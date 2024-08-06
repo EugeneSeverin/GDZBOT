@@ -13,7 +13,14 @@ This project sets up a development environment using Docker for the GDZBot appli
 
 ## Introduction
 
-The GDZBot project is designed to work with a PostgreSQL database backend and provides an environment for developing and testing the GDZBot application. It uses Docker and Docker Compose to streamline setup and deployment.
+The GDZBot project is an asynchronous Telegram bot designed to provide several functionalities, including:
+
+- Conversing with ChatGPT for interactive AI-driven chat experiences.
+- Managing user balances with easy-to-use commands.
+- Offering a user panel for managing settings and viewing statistics.
+- Providing real-time balance updates and usage information for users.
+
+This bot leverages PostgreSQL as its database backend and utilizes Docker and Docker Compose to streamline setup and deployment.
 
 ## Prerequisites
 
