@@ -37,7 +37,7 @@ To set up the development environment, follow these steps:
 1. Clone the repository:
 
     ```bash
-    git clone https://github.com/yourusername/gdzbot-project.git
+    git clone https://github.com/EugeneSeverin/gdzbot-project.git
     cd gdzbot-project
     ```
 
